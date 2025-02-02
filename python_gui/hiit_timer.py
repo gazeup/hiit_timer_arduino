@@ -2,15 +2,21 @@ import serial
 from tkinter import *
 import tkinter as tk
 import time
-from tkinter import ttk
 
 commPort = 'COM3'
 serial_connection = serial.Serial(commPort, baudrate = 9600, timeout = 1)
 
-def startSession():
-    serial_connection.write(b'o')
+# Send data
+def sendData():
+    active_time = int(entryHiitTime.get())
+    pause_time = int(entryPauseTime.get())
+    rounds = int(entryRounds.get())
+    
+    data = f"{active_time},{pause_time},{rounds}\n"
+    serial_connection.write(data.encode())
+    print(f"Sent: {data}")    
 
-#Define fonts and colors
+# Define fonts and colors
 font_entry = ("Helvetica", 14)
 font_button = ("Helvetica", 14, "bold")
 
@@ -53,7 +59,7 @@ entryRounds = create_labeled_entry("Rounds", "4", 5)
 
 # Start Session Button
 start_session_button = tk.Button(root, width=15, text='Start Session', borderwidth=0, relief="flat",
-                                 font=font_button, bg=highlight_color, fg=text_color_button, command=startSession)
+                                 font=font_button, bg=highlight_color, fg=text_color_button, command=sendData)
 start_session_button.grid(ipady=13, pady=34, row=7, column=0, columnspan=2, sticky="ew")
 
 # Run main loop
