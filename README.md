@@ -4,3 +4,5 @@ A simple Python Tkinter GUI that interacts with an Arduino via serial communicat
 ## Features
 - A button to start the HIIT timer
 - Serial communication with Arduino
+
+- ![The Tkinter interface with input fields and start button](hiit_interface.png)
