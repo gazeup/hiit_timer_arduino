@@ -1,12 +1,46 @@
 const int hiitLedPin = 3;
-const int pausLedPin = 4;
+const int pauseLedPin = 4;
 const int soundPin = 8;
+
+void startActiveLight(int active_time) {
+  digitalWrite(hiitLedPin, HIGH);
+  delay(active_time);
+  digitalWrite(hiitLedPin, LOW);
+}
+
+void startPauseLight(int pause_time) {
+  digitalWrite(pauseLedPin, HIGH);
+  delay(pause_time);
+  digitalWrite(pauseLedPin, LOW);
+}
+
+void startTune() {
+  int melody[] = {523, 659, 784};
+  int duration[] = {200, 200, 200};
+
+  for (int i = 0; i < 3; i++) {
+    tone(soundPin, melody[i]);
+    delay(duration[i]);
+  }
+  noTone(soundPin);
+}
+
+void pauseTune() {
+  int melody[] = {880, 587};
+  int duration[] = {200, 400};
+
+  for (int i = 0; i < 2; i++) {
+    tone(soundPin, melody[i]);
+    delay(duration[i]);
+  }
+  noTone(soundPin);
+}
 
 void setup() {
   Serial.begin(9600);
 
   pinMode(hiitLedPin, OUTPUT);
-  pinMode(pausLedPin, OUTPUT);
+  pinMode(pauseLedPin, OUTPUT);
   pinMode(soundPin, OUTPUT);
 }
 
@@ -21,13 +55,10 @@ void loop() {
       pause_time *= 1000;
 
       for (int i = 0; i < rounds; i++) {
-        delay(10);
-        digitalWrite(hiitLedPin, HIGH);
-        delay(active_time);
-        digitalWrite(hiitLedPin, LOW);
-        digitalWrite(pausLedPin, HIGH);
-        delay(pause_time);
-        digitalWrite(pausLedPin, LOW);
+        startTune();
+        startActiveLight(active_time);
+        pauseTune();
+        startPauseLight(pause_time);
       }
     }
   }
